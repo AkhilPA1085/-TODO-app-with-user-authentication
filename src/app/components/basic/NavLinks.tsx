@@ -7,7 +7,7 @@ const links = [
         name: 'Home', href: '/', icon: HomeIcon
     },
     {
-        name: 'Tasks', href: '', icon: BriefcaseIcon
+        name: 'Tasks', href: '/tasks', icon: BriefcaseIcon
     },
     {
         name: 'Users', href: '/users', icon: UsersIcon
