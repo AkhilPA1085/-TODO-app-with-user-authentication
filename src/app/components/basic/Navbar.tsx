@@ -27,18 +27,19 @@ const Navbar = () => {
 
   if (user) {
     return (
-      <div className='fixed top-0 h-24 w-full'>
-        <Container>
-          <div className='flex items-center justify-between py-5'>
-            <h1 className="text-3xl font-bold uppercase tracking-wider">TODO</h1>
-            <button
-              onClick={logout}
-              className='bg-green-600 p-4 rounded-md text-white font-bold'>
-              Logout ({user?.username})
-            </button>
-          </div>
-        </Container>
-      </div>
+      <></>
+      // <div className='fixed top-0 h-24 w-full'>
+      //   <Container>
+      //     <div className='flex items-center justify-between py-5'>
+      //       <h1 className="text-3xl font-bold uppercase tracking-wider">TODO</h1>
+      //       <button
+      //         onClick={logout}
+      //         className='bg-green-600 p-4 rounded-md text-white font-bold'>
+      //         Logout ({user?.username})
+      //       </button>
+      //     </div>
+      //   </Container>
+      // </div>
     )
   } else {
     return null

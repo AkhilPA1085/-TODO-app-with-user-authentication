@@ -13,17 +13,23 @@ export type LoginForm = {
 
 export type ListType = {
     data: string;
-    _id: string
+    _id: string;
+    status: boolean
 }
 
 export type ReactSetState<T> = Dispatch<SetStateAction<T>>
 
+export interface ErrorField {
+    message: string;
+}
+
 export type InputFieldType = {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     className?: string;
-    type?: 'text' | 'color' | 'password' | 'email' | 'tel' | 'number';
+    type?: string;
     placeholder?: string;
     value?: any;
+    error?: { [key: string]: ErrorField };
     [key: string]: any;
 }
 
@@ -33,11 +39,21 @@ export type ButtonType = {
     href?: string;
     label?: string;
     type?: 'submit' | 'button';
-    icon?:string
+    icon?: string
     [key: string]: any;
 }
 
 export type postData = {
-    userId:string,
-    item:string
+    _id?: string;
+    todo: string,
+    userId: string,
+    assignedTo:string[],
+    status: string,
+    end_date: string
+}
+
+export type User = {
+    _id: string;
+    username: string;
+    email: string
 }

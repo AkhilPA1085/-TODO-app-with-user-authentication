@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import StoreProvider from '@/app/StoreProvider'
+import SideNav from "./components/basic/SideBar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,7 +31,12 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StoreProvider>
-          {children}
+          <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+            <div className="w-full flex-none md:w-64">
+              <SideNav />
+            </div>
+            <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
+          </div>
         </StoreProvider>
       </body>
     </html>

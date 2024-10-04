@@ -1,7 +1,13 @@
 import React from 'react'
 import { ButtonType } from '../../types/definitions'
 import Link from 'next/link'
-import { TrashIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/outline'
+import { TrashIcon, 
+  PlusIcon, 
+  PencilIcon,
+  CheckIcon,
+  XMarkIcon,
+  ExclamationTriangleIcon
+ } from '@heroicons/react/24/outline'
 
 const getIcon = (icon: string) => {
   switch (icon) {
@@ -11,6 +17,12 @@ const getIcon = (icon: string) => {
       return PlusIcon;
     case 'pencil':
       return PencilIcon
+    case 'checked':
+      return CheckIcon
+    case 'close':
+      return XMarkIcon
+    case 'warning':
+      return ExclamationTriangleIcon
   }
   return PlusIcon;
 }

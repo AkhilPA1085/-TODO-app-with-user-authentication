@@ -63,3 +63,13 @@ export const resetPassword = async(newPassword:string,token:any)=>{
         return error.response.data
     }
 }
+
+
+export async function getAllUsers(){
+    try {
+        const response = await axios.get(`/api/user/all`)
+        return response.data
+    } catch (error:any) {
+        console.log(error)
+    }
+}

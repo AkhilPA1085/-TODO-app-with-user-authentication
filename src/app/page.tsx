@@ -2,18 +2,20 @@
 import { useState, useEffect, Suspense } from "react";
 import List from "./components/basic/List";
 import { getSingleUserDetails } from "@/services/user.services";
-import CustomInput from "./components/basic/CustomInput";
-import CustomButton from "./components/basic/CustomButton";
-import { createPost, deleteTodo, getSingleUserPosts } from "@/services/posts.services";
+import { createPost,getMyTodoList } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "./lib/features/profile/profileSlice";
 import Navbar from "./components/basic/Navbar";
 import { setPost } from "./lib/features/posts/postSlice";
 import CustomLoader from "./components/basic/CustomLoader";
+import BaseModal from "./components/modals/BaseModal";
+import BasicForm from "./components/forms/BasicForm";
 
 
 export default function Home() {
-  const [inputValue, setInputValue] = useState<string>("")
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState({})
+  const [isModalOpen, setModalOpen] = useState(false);
   const dispatch = useDispatch()
   const profileReducer = useSelector((state: any) => state.profile)
   const { user } = profileReducer
@@ -30,33 +32,48 @@ export default function Home() {
 
   const getUserProfile = async () => {
     await getSingleUserDetails().then((res) => {
-      if (res.data.success) {
+      if (res?.data?.success) {
         dispatch(setProfile({ profile: res.data.user }))
+      } else {
+        console.log(res.data)
       }
     })
   }
 
   const userPosts = async () => {
-    await getSingleUserPosts(user?._id).then((res) => {
+    await getMyTodoList(user?._id).then((res) => {
       if (res?.success) {
         dispatch(setPost({ posts: res?.todos }))
       }
     })
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleModalToggle = (isOpen: boolean) => {
+    setModalOpen(isOpen);
+  };
+
+  const handleSubmit = async (formData: any) => {
+    setLoading(true)
     if (user && user?._id) {
-      await createPost({
+      const assignedTo = formData.assignedTo?.length ? formData.assignedTo : [user._id];
+      const requestBody = {
+        todo: formData.todo,
+        assignedTo: assignedTo,
         userId: user?._id,
-        item: inputValue
-      }).then((res) => {
+        status: formData.status,
+        end_date: formData.end_date
+      }
+      await createPost(requestBody).then((res) => {
         if (res?.success) {
+          setLoading(false)
+          setModalOpen(false)
           userPosts();
+        } else {
+          setError(res)
+          setLoading(false)
         }
       });
     }
-    setInputValue('')
   }
 
   return (
@@ -66,24 +83,25 @@ export default function Home() {
       <Navbar />
       <main className="flex flex-col gap-8 row-start-2 items-center">
         <h1 className="text-3xl font-bold tracking-widest uppercase">TODO</h1>
+        <BaseModal
+          label="Create Task"
+          isOpen={isModalOpen}
+          onOpenChange={handleModalToggle}
+        >
+          <BasicForm
+            handleSubmit={handleSubmit}
+            loading={loading}
+            error={error}
+          />
+        </BaseModal>
         {/* form */}
         <div className="flex justify-center items-center gap-10">
-          <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
-            <CustomInput
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)} />
-            <CustomButton
-              className="bg-black text-white"
-              label="Add"
-              icon="add" />
-          </form>
           {/* TODO list */}
           <div className="h-5/6 overflow-y-auto w-full">
-          <Suspense fallback={<CustomLoader/>}>
-            <List
-              fetchData={userPosts} />
-          </Suspense>
+            <Suspense fallback={<CustomLoader />}>
+              <List
+                fetchData={userPosts} />
+            </Suspense>
           </div>
         </div>
       </main>

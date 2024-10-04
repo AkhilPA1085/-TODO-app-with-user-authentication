@@ -12,7 +12,7 @@ export async function GET(request:NextRequest){
             return NextResponse.json({message:'User Id is needed'},{status:400})
         }
 
-        const todos = await Post.find({userId:id})
+        const todos = await Post.find({assignedTo:id})
 
         return NextResponse.json({todos,success:true},{status:201})
 

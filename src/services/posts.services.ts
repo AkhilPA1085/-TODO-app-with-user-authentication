@@ -1,16 +1,16 @@
 import { ListType, postData } from "@/app/types/definitions"
 import axios from "axios"
 
-export async function createPost({userId,item}:postData){
+export async function createPost({todo,userId,end_date,status,assignedTo}:postData){
     try {
-        const response = await axios.post('/api/posts/create',{userId,item})
+        const response = await axios.post('/api/posts/create',{todo,userId,end_date,status,assignedTo})
         return response.data
     } catch (error:any) {
-        console.log(error)
+        return error.response.data.error
     }
 }
 
-export async function getSingleUserPosts(userId:string){
+export async function getMyTodoList(userId:string){
     try {
         const response = await axios.get(`/api/posts/get_user_todo?id=${userId}`)
         return response.data
@@ -28,7 +28,7 @@ export async function deleteTodo(id:string){
     }
 }
 
-export async function updateTodo(editData:ListType){
+export async function updateTodo(editData:postData){
     try {
         const response = await axios.post(`/api/posts/edit`,{editData})
         return response.data
