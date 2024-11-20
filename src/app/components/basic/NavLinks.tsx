@@ -1,13 +1,16 @@
-import { BriefcaseIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline'
+'use client'
+import { BriefcaseIcon, ClipboardDocumentCheckIcon, UsersIcon } from '@heroicons/react/24/outline'
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import React from 'react'
+import clsx from 'clsx';
 
 const links = [
     {
-        name: 'Home', href: '/', icon: HomeIcon
+        name: 'Tasks for me', href: '/', icon: ClipboardDocumentCheckIcon
     },
     {
-        name: 'Tasks', href: '/tasks', icon: BriefcaseIcon
+        name: 'Created Tasks', href: '/tasks', icon: BriefcaseIcon
     },
     {
         name: 'Users', href: '/users', icon: UsersIcon
@@ -15,6 +18,7 @@ const links = [
 ]
 
 const NavLinks = () => {
+    const pathname = usePathname()
     return (
         <>
             {links?.map((link, index) => {
@@ -23,10 +27,13 @@ const NavLinks = () => {
                     <Link
                         key={index}
                         href={link.href}
-                        className='flex grow items-center 
-                        justify-center 
-                        gap-2 rounded-md bg-gray-50 p-3 text-sm 
-                        font-medium hover:bg-sky-100 text-black'>
+                        className={
+                        clsx('flex items-center justify-start rounded-md bg-gray-50 p-3 text-md font-bold hover:bg-sky-100 text-black w-full',
+                            {
+                                'bg-sky-100': pathname === link?.href
+                            }
+                        )}
+                    >
                         <LinkIcon className='w-6 h-6' />
                         <p className="hidden md:block text-black">
                             {link.name}

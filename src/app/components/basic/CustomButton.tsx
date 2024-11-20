@@ -6,7 +6,8 @@ import { TrashIcon,
   PencilIcon,
   CheckIcon,
   XMarkIcon,
-  ExclamationTriangleIcon
+  ExclamationTriangleIcon,
+  PaperAirplaneIcon
  } from '@heroicons/react/24/outline'
 
 const getIcon = (icon: string) => {
@@ -23,6 +24,8 @@ const getIcon = (icon: string) => {
       return XMarkIcon
     case 'warning':
       return ExclamationTriangleIcon
+    case 'send':
+      return PaperAirplaneIcon
   }
   return PlusIcon;
 }
@@ -48,7 +51,7 @@ const CustomButton = (
 
   return href ? (<Link
     href={href}
-    className={`bg-green-600 p-4 text-white uppercase 
+    className={`bg-teal-700 p-4 text-white uppercase 
       rounded-md font-bold tracking-wider 
       inline-flex items-center justify-center gap-4 ${label && `gap-4`} ${className}`}
     {...props}>
@@ -56,7 +59,7 @@ const CustomButton = (
   </Link>) : (
     <button
       onClick={onClick}
-      className={`bg-green-600 p-4 text-white uppercase 
+      className={`bg-teal-700 p-4 text-white uppercase 
         rounded-md font-bold tracking-wider 
         inline-flex items-center justify-center ${label && `gap-4`} ${className}`}
       type={type}

@@ -1,16 +1,14 @@
 "use client";
-import { useState, useEffect, Suspense } from "react";
-import List from "./components/basic/List";
+import { Suspense, useEffect, useState } from "react";
+import List from "./components/tables/List";
 import { getSingleUserDetails } from "@/services/user.services";
-import { createPost, getMyTodoList } from "@/services/posts.services";
+import { getMyTaskList } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "./lib/features/profile/profileSlice";
-import Navbar from "./components/basic/Navbar";
-import { setPost } from "./lib/features/posts/postSlice";
-import CustomLoader from "./components/basic/CustomLoader";
-import CreateTodoModal from "./components/modals/CreateTodoModal";
+import TableSkeleton from "./components/skeltons/TableSkelton";
 
 export default function Home() {
+  const [posts, setPosts] = useState([])
   const dispatch = useDispatch();
   const profileReducer = useSelector((state: any) => state.profile);
   const { user } = profileReducer;
@@ -36,22 +34,25 @@ export default function Home() {
   };
 
   const userPosts = async () => {
-    await getMyTodoList(user?._id).then((res) => {
+    await getMyTaskList(user?._id).then((res) => {
       if (res?.success) {
-        dispatch(setPost({ posts: res?.todos }));
+        setPosts(res?.todos)
       }
     });
   };
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <main className="flex flex-col gap-8 row-start-2">
       <div className="flex justify-between items-center">
-        <h1 className="text-gray-800 text-2xl font-bold">
+        <h1 className="text-teal-700 text-2xl font-bold">
           Tasks For You
         </h1>
-        
       </div>
-      <List fetchData={userPosts} />
+      <List fetchData={userPosts} posts={posts} />
     </main>
   );
 }

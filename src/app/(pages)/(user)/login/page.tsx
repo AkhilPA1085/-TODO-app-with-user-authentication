@@ -6,6 +6,7 @@ import { userLogin } from '@/services/user.services';
 import { useRouter } from 'next/navigation';
 import CustomInput from '@/app/components/basic/CustomInput';
 import CustomButton from '@/app/components/basic/CustomButton';
+import BaseCard from '@/app/components/cards/BaseCard';
 
 const LoginPage = () => {
     const router = useRouter()
@@ -42,30 +43,30 @@ const LoginPage = () => {
         }
     }
     return (
-        <div className="h-screen flex items-center justify-center">
-            <form onSubmit={handleLogin} className='flex flex-col gap-5'>
-                <CustomInput type="email"
-                    id='email'
-                    name='email'
-                    placeholder='Email'
-                    value={user?.email}
-                    onChange={handleChange} />
-                <CustomInput type="password"
-                    id='password'
-                    name='password'
-                    placeholder='Password'
-                    value={user?.password}
-                    onChange={handleChange} />
-                <CustomButton
-                    disabled={loading}
-                    onClick={handleLogin}
-                    label={loading ? 'Processing...' : 'Login'}/>
-                <div className="flex items-center justify-between">
-                    <Link href='/signup'>Signup</Link>
-                    <Link href='/forgotpassword' className='underline text-blue-600 font-sm'>forgot password?</Link>
-                </div>
-                {error?.length > 0 && <p className='text-red-600 font-bold'>{error}</p>}
-            </form>
+        <div className="flex items-center justify-center min-h-screen">
+            <BaseCard shadow className='w-full max-w-md p-8'>
+                <form onSubmit={handleLogin} className='flex flex-col gap-5'>
+                    <CustomInput type="email"
+                        id='email'
+                        name='email'
+                        placeholder='Email'
+                        value={user?.email}
+                        onChange={handleChange} />
+                    <CustomInput type="password"
+                        id='password'
+                        name='password'
+                        placeholder='Password'
+                        value={user?.password}
+                        onChange={handleChange} />
+                    <CustomButton
+                        disabled={loading}
+                        onClick={handleLogin}
+                        label={loading ? 'Processing...' : 'Login'} />
+                    <Link href='/signup' className='underline text-blue-600 font-sm'>Create an account?</Link>
+                    <Link href='/forgotpassword' className='underline text-blue-600 font-sm'>Forgot password?</Link>
+                    {error?.length > 0 && <p className='text-red-600 font-bold'>{error}</p>}
+                </form>
+            </BaseCard>
         </div>
     )
 }

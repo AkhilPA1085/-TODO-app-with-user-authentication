@@ -7,8 +7,8 @@ connect()
 
 export async function POST(request: NextRequest) {
     try {
-        const reqestBody = await request.json();
-        const { todo, userId,status,end_date,assignedTo } = reqestBody;
+        const {ceateData} = await request.json();
+        const { todo, userId,status,end_date,assignedTo,comments } = ceateData ?? {};
 
         const user = await User.findOne({ _id: userId })
         if (user) {
@@ -17,7 +17,8 @@ export async function POST(request: NextRequest) {
                 userId: userId,
                 assignedTo:assignedTo,
                 status:status,
-                end_date:end_date
+                end_date:end_date,
+                comments:comments,
             })
             let savedData = await newPost.save();
             return NextResponse.json({message:'Post added',success:true,savedData},{status:201})

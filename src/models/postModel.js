@@ -22,6 +22,22 @@ const postSchema = new mongoose.Schema(
             type:String,
             required:[true,'Please provide a valid data'],
         },
+        comments: {
+            type: [{
+                userId: {
+                    type: String,
+                    required: [true, 'Please provide a valid userId for the comment'],
+                },
+                comment: {
+                    type: String,
+                    required: [true, 'Please provide a valid comment'],
+                },
+                createdAt: {
+                    type: Date,
+                    default: Date.now,
+                }
+            }]
+        },
         end_date:{
             type:Date,
             required:[true,'Please Provide a valid Date']

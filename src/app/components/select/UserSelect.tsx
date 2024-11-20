@@ -15,6 +15,11 @@ type UserSelectProps = {
 export default function UserSelect({ name, placeholder, onSelectUsers,initialUsers,error }: UserSelectProps) {
     const [users, setUsers] = useState<User[]>([])
     const [values, setValues] = useState<Set<Key>>(new Set(initialUsers));
+    useEffect(()=>{
+        if(initialUsers){
+            setValues(new Set(initialUsers))
+        }
+    },[initialUsers])
     useEffect(() => {
         getAllUsers().then((res) => {
             setUsers(res.data)
@@ -22,7 +27,6 @@ export default function UserSelect({ name, placeholder, onSelectUsers,initialUse
     }, [])
 
     const handleSelectionChange = (selectedKeys: "all" | Set<Key>) => {
-        // Handle the selection change, ensuring selectedKeys is of type Set<Key>
         if (selectedKeys !== "all") {
             setValues(selectedKeys);
             onSelectUsers(Array.from(selectedKeys) as string[]);

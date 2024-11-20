@@ -1,12 +1,12 @@
 'use client'
 import { Select, SelectItem } from "@nextui-org/react";
 import { STATUS_VALUES } from '@/contant_utils/data'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ErrorField } from "@/app/types/definitions";
 
 type StatusSelectProps = {
     name: string;
-    placeholder: string;
+    placeholder?: string;
     onSelectSubmit: (value: string) => void;
     error?: { [key: string]: ErrorField };
     initialValue?:string
@@ -14,6 +14,12 @@ type StatusSelectProps = {
 
 export default function StatusSelect({ name, placeholder, onSelectSubmit,initialValue, error }: StatusSelectProps) {
     const [value, setValue] = useState<string | null>(initialValue || null);
+    useEffect(() => {
+        if (initialValue) {
+          setValue(initialValue);
+        }
+      }, [initialValue]);
+
     const onSelect = (selectedKey: any) => {
         const selectedValue = Array.isArray(selectedKey) ? selectedKey[0] : Array.from(selectedKey as Set<React.Key>)[0];
         if (selectedValue) {

@@ -73,3 +73,14 @@ export async function getAllUsers(){
         console.log(error)
     }
 }
+
+export async function getUserWithId(userIds:string[]){
+    try {
+        const response = await axios.get(`/api/user/getUser`,{
+            params:{userIds:userIds.join(',')}
+        })
+        return response.data;
+    } catch (error) {
+        console.log(error)
+    }
+}

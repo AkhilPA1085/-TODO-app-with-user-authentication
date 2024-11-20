@@ -1,12 +1,13 @@
 'use client'
 import Link from 'next/link'
-import React from 'react'
+import React, { Suspense } from 'react'
 import NavLinks from './NavLinks'
 import { PowerIcon } from '@heroicons/react/24/outline'
 import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import { userLogout } from '@/services/user.services'
 import { setProfile } from '@/app/lib/features/profile/profileSlice'
+import SidebarSkeleton from '../skeltons/SideBarSkelton'
 
 const SideNav = () => {
     const router = useRouter()
@@ -28,33 +29,39 @@ const SideNav = () => {
         }
     }
 
+    if (!user) {
+        return null;
+    }
+
     return (
-        <div className="flex h-full flex-col px-3 py-4 md:px-2">
-            <Link
-                className="mb-2 flex h-20 items-end justify-start 
-                rounded-md bg-teal-700 text-white p-4 md:h-40"
-                href="/"
-            >
-                <div className="w-32 text-white md:w-40">
-                    TODO
+        <Suspense fallback={<SidebarSkeleton />}>
+            <div className="flex h-full justify-between flex-col px-3 py-4 md:px-2 shadow-md">
+                <Link
+                    className="mb-2 flex h-20 items-end justify-start 
+                rounded-md bg-teal-700 text-white p-4 md:h-40 shadow-md"
+                    href="/"
+                >
+                    <div className="w-32 text-white md:w-40">
+                        {user?.username}'s TODO
+                    </div>
+                </Link>
+                <div className="flex flex-col h-full">
+                    <NavLinks />
                 </div>
-            </Link>
-            <div className="flex grow flex-row justify-between 
-            space-x-2 md:flex-col md:space-x-0 md:space-y-2">
-                <NavLinks />
                 <button
                     onClick={handleLogout}
-                    className="flex h-[48px] w-full grow items-center 
-                    justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm 
-                    font-medium hover:bg-sky-100 hover:text-blue-600 
-                    md:flex-none md:justify-start md:p-2 md:px-3"
+                    className="flex grow items-center 
+                        justify-start
+                        gap-2 rounded-md bg-gray-50 p-3 text-sm 
+                        font-semibold text-xl hover:bg-sky-100 text-black 
+                        max-h-10"
                     type="button"
                 >
                     <PowerIcon className="w-6" />
                     <div className="hidden md:block">Sign Out</div>
                 </button>
             </div>
-        </div>
+        </Suspense>
     )
 }
 

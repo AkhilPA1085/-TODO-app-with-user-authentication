@@ -25,3 +25,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.first-letter-cap {
+  text-transform: lowercase;
+}
+
+.first-letter-cap::first-letter {
+  text-transform: uppercase;
+}

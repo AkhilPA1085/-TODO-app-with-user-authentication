@@ -8,7 +8,7 @@ export const postSlice = createSlice({
     reducers:{
         setPost:(state,action)=>{
             state.post = action.payload
-        }
+        },
     }
 })
 

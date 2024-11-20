@@ -4,6 +4,7 @@ import CustomInput from '../basic/CustomInput'
 import CustomButton from '../basic/CustomButton'
 import UserSelect from '../select/UserSelect'
 import StatusSelect from '../select/StatusSelect'
+import {formatDateTimeLocal} from '@/contant_utils/utils'
 
 type BasicFormProps = {
     handleSubmit: (formData: any) => void;
@@ -17,10 +18,6 @@ type BasicFormProps = {
     }
 }
 
-const formatDateTimeLocal = (date: string | Date) => {
-    const d = new Date(date);
-    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
-};
 
 const inputFields = [
     {
@@ -77,6 +74,7 @@ const BasicForm = ({ handleSubmit, loading, error, initialValues }: BasicFormPro
         handleSubmit(formData)
     }
     const currentDateTime = new Date().toISOString().slice(0, 16);
+    
     return (
         <form className="flex flex-col gap-5" onSubmit={onSubmit}>
             {inputFields?.map((inputField, index) => {

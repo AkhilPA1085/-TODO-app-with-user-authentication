@@ -2,13 +2,16 @@
 import React, { useEffect, useState } from "react";
 import BaseModal from "./BaseModal";
 import BasicForm from "../forms/BasicForm";
-import { createPost, getMyTodoList } from "@/services/posts.services";
+import { createTask } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleUserDetails } from "@/services/user.services";
 import { setProfile } from "@/app/lib/features/profile/profileSlice";
-import { setPost } from "@/app/lib/features/posts/postSlice";
 
-const CreateTodoModal = () => {
+type CreateTodoProps = {
+  fetchData:()=>Promise<void>;
+}
+
+const CreateTodoModal = ({fetchData}:CreateTodoProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState({});
   const [isModalOpen, setModalOpen] = useState(false);
@@ -22,7 +25,7 @@ const CreateTodoModal = () => {
 
   useEffect(() => {
     if (user?._id) {
-      userPosts();
+      fetchData();
     }
   }, [user?._id]);
 
@@ -32,14 +35,6 @@ const CreateTodoModal = () => {
         dispatch(setProfile({ profile: res.data.user }));
       } else {
         console.log(res.data);
-      }
-    });
-  };
-
-  const userPosts = async () => {
-    await getMyTodoList(user?._id).then((res) => {
-      if (res?.success) {
-        dispatch(setPost({ posts: res?.todos }));
       }
     });
   };
@@ -61,11 +56,11 @@ const CreateTodoModal = () => {
         status: formData.status,
         end_date: formData.end_date,
       };
-      await createPost(requestBody).then((res) => {
+      await createTask(requestBody).then((res) => {
         if (res?.success) {
           setLoading(false);
           setModalOpen(false);
-          userPosts();
+          fetchData();
         } else {
           setError(res);
           setLoading(false);
@@ -78,9 +73,12 @@ const CreateTodoModal = () => {
       label="Create Task"
       isOpen={isModalOpen}
       onOpenChange={handleModalToggle}
-      buttonClass='bg-green-500 hover:bg-green-600'
+      buttonClass='bg-teal-700 hover:bg-teal-600'
     >
-      <BasicForm handleSubmit={handleSubmit} loading={loading} error={error} />
+      <BasicForm
+        handleSubmit={handleSubmit}
+        loading={loading}
+        error={error} />
     </BaseModal>
   );
 };

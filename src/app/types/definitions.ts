@@ -1,14 +1,12 @@
 import { Dispatch, SetStateAction } from "react";
 
-export type SignUpForm = {
-    username: string;
+export type LoginForm = {
     email: string;
     password: string;
 }
 
-export type LoginForm = {
-    email: string;
-    password: string;
+export type SignUpForm = LoginForm & {
+    username: string;
 }
 
 export type ListType = {
@@ -25,11 +23,13 @@ export interface ErrorField {
 
 export type InputFieldType = {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChangeTextArea?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className?: string;
     type?: string;
     placeholder?: string;
     value?: any;
     error?: { [key: string]: ErrorField };
+    textarea?:boolean;
     [key: string]: any;
 }
 
@@ -49,7 +49,13 @@ export type postData = {
     userId: string,
     assignedTo:string[],
     status: string,
-    end_date: string
+    end_date: string,
+    comments?:{
+        userId:string,
+        comment:string,
+        createdAt:string,
+        _id?:string
+    }[];
 }
 
 export type User = {
