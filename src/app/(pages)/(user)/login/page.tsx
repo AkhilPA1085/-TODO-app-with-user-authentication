@@ -37,9 +37,13 @@ const LoginPage = () => {
             } else if (response?.data?.error) {
                 setError(response?.data.error || "An error occurred, please try again.");
             }
-        } catch (error) {
+        } catch (err: unknown) {
             setLoading(false)
-            setError("An unexpected error occurred. Please try again.");
+            if (err instanceof Error) {
+                setError(err.message)
+            } else {
+                setError("An unexpected error occurred.")
+            }
         }
     }
     return (

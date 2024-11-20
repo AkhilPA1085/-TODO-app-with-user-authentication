@@ -17,6 +17,6 @@ export async function GET(request:NextRequest){
         return NextResponse.json({todos,success:true},{status:201})
 
     } catch (error) {
-       return NextResponse.json({error:'Something went wrong',success:false},{status:500}) 
+       return NextResponse.json({error:`Something went wrong,${error}`,success:false},{status:500}) 
     }
 }

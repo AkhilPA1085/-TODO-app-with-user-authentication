@@ -62,7 +62,7 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
           setUserName((prev) => ({ ...prev, ...usernameMap }));
 
         } catch (error) {
-
+          return error
         }
       };
     }
@@ -82,7 +82,7 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
       })
 
     } catch (error) {
-
+      return error
     }
   }
 

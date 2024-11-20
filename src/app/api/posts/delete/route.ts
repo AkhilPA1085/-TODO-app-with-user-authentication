@@ -16,6 +16,6 @@ export async function DELETE(request: NextRequest) {
 
         return NextResponse.json({ message: 'Post Deleted', success: true }, { status: 200 });
     } catch (error) {
-        return NextResponse.json({ error: 'Something went wrong', success: false }, { status: 500 })
+        return NextResponse.json({ error: `Something went wrong ${error}`, success: false }, { status: 500 })
     }
 }

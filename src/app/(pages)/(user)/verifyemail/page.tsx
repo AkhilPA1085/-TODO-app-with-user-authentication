@@ -19,8 +19,8 @@ const VerifyEmail = () => {
       if (res.data.success) {
         setState((prev) => ({ ...prev, verified: true, loading: false }));
       }
-    } catch (error) {
-      setState((prev) => ({ ...prev, error: true, loading: false }));
+    } catch (error:any) {
+      setState((prev) => ({ ...prev, error: error, loading: false }));
     }
   };
 

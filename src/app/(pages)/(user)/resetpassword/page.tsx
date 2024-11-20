@@ -29,7 +29,7 @@ const ResetPassword = () => {
                 setLoading(false)
                 setResMessage(res?.data.error || "An error occurred, please try again.");
             }
-        }).catch((error) => {
+        }).catch((error:unknown) => {
             // Handle unexpected errors
             setLoading(false)
             setResMessage("An unexpected error occurred. Please try again.");
