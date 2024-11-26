@@ -5,13 +5,14 @@ import { getSingleUserDetails } from "@/services/user.services";
 import { getMyTaskList } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "./lib/features/profile/profileSlice";
-import TableSkeleton from "./components/skeltons/TableSkelton";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [posts, setPosts] = useState([])
   const dispatch = useDispatch();
   const profileReducer = useSelector((state: any) => state.profile);
   const { user } = profileReducer;
+  const router = useRouter()
 
   useEffect(() => {
     getUserProfile();
@@ -41,9 +42,11 @@ export default function Home() {
     });
   };
 
-  if (!user) {
-    return null;
+  if (!user?.isVerified) {
+    router.replace('/login')
   }
+
+  console.log('user?.isVerified',user?.isVerified)
 
   return (
     <main className="flex flex-col gap-8 row-start-2">

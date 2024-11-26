@@ -4,17 +4,26 @@ import CreateTodoModal from "@/app/components/modals/CreateTodoModal";
 import { getCreatedTaskByMe } from "@/services/posts.services";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { User } from "@/app/types/definitions";
+
+interface RootState {
+  profile: {
+    user: User | null;
+    token: string | null;
+  };
+}
 
 const Tasks = () => {
   const [posts,setPosts]=useState([])
-  const profileReducer = useSelector((state: any) => state.profile);
+  const profileReducer = useSelector((state: RootState) => state.profile);
   const { user } = profileReducer;
 
   useEffect(() => {
     userPosts();
-  }, []);
+  }, [user?._id]);
 
   const userPosts = async () => {
+    if(!user?._id) return;
     await getCreatedTaskByMe(user?._id).then((res) => {
       if (res?.success) {
         setPosts(res?.todos)

@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { userLogout } from '@/services/user.services'
 import { setProfile } from '@/app/lib/features/profile/profileSlice'
 import SidebarSkeleton from '../skeltons/SideBarSkelton'
+import { withVerification } from '@/app/components/hoc/withVerification'
 
 const SideNav = () => {
     const router = useRouter()
@@ -29,40 +30,38 @@ const SideNav = () => {
         }
     }
 
-    if (!user) {
-        return null;
-    }
-
     return (
         <Suspense fallback={<SidebarSkeleton />}>
-            <div className="flex h-full justify-between flex-col px-3 py-4 md:px-2 shadow-md">
-                <Link
-                    className="mb-2 flex h-20 items-end justify-start 
+            <div className='w-full flex-none md:w-64'>
+                <div className="flex h-full justify-between flex-col px-3 py-4 md:px-2 shadow-md">
+                    <Link
+                        className="mb-2 flex h-20 items-end justify-start 
                 rounded-md bg-teal-700 text-white p-4 md:h-40 shadow-md"
-                    href="/"
-                >
-                    <div className="w-32 text-white md:w-40">
-                        {user?.username}'s TODO
+                        href="/"
+                    >
+                        <div className="w-32 text-white md:w-40">
+                            {user?.username}'s TODO
+                        </div>
+                    </Link>
+                    <div className="flex flex-col h-full">
+                        <NavLinks />
                     </div>
-                </Link>
-                <div className="flex flex-col h-full">
-                    <NavLinks />
-                </div>
-                <button
-                    onClick={handleLogout}
-                    className="flex grow items-center 
+                    <button
+                        onClick={handleLogout}
+                        className="flex grow items-center 
                         justify-start
                         gap-2 rounded-md bg-gray-50 p-3 text-sm 
                         font-semibold text-xl hover:bg-sky-100 text-black 
                         max-h-10"
-                    type="button"
-                >
-                    <PowerIcon className="w-6" />
-                    <div className="hidden md:block">Sign Out</div>
-                </button>
+                        type="button"
+                    >
+                        <PowerIcon className="w-6" />
+                        <div className="hidden md:block">Sign Out</div>
+                    </button>
+                </div>
             </div>
         </Suspense>
     )
 }
 
-export default SideNav
+export default withVerification(SideNav)

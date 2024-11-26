@@ -7,7 +7,7 @@ const VerifyEmail = () => {
   const [state, setState] = useState({
     token: '',
     verified: false,
-    error: false,
+    error: null as Error | null, // Specify error type
     loading: true,
   });
 
@@ -19,8 +19,12 @@ const VerifyEmail = () => {
       if (res.data.success) {
         setState((prev) => ({ ...prev, verified: true, loading: false }));
       }
-    } catch (error:any) {
-      setState((prev) => ({ ...prev, error: error, loading: false }));
+    } catch (error: unknown) {  // Specify that error could be of type unknown
+      if (error instanceof Error) {  // Check if error is an instance of the Error object
+        setState((prev) => ({ ...prev, error, loading: false }));
+      } else {
+        setState((prev) => ({ ...prev, error: new Error('An unknown error occurred'), loading: false }));
+      }
     }
   };
 
@@ -45,7 +49,7 @@ const VerifyEmail = () => {
           <CustomButton href='/login' label='Login'/>
         </>
       ) : error ? (
-        <div className='text-4xl'>Verification Error</div>
+        <div className='text-4xl'>{error.message || 'Verification Error'}</div>
       ) : null}
     </div>
   );
