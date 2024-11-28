@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useState } from "react";
-import { postData } from "../../types/definitions";
+import { ApiResponse, postData, ProfileState } from "../../types/definitions";
 import CustomButton from "../basic/CustomButton";
 import { deleteTask, updateTask } from "@/services/posts.services";
 import { useSelector } from "react-redux";
@@ -13,10 +13,17 @@ import TableSkeleton from "../skeltons/TableSkelton";
 
 type List = {
   fetchData: () => Promise<void>;
-  posts:any[]
+  posts: postData[]
 };
 
-const List = ({ fetchData,posts }: List) => {
+interface FormData {
+  todo: string;
+  assignedTo?: string[];
+  status: string;
+  end_date: string;
+}
+
+const List = ({ fetchData, posts }: List) => {
   const [loading, setLoading] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setDeleteModalOpen] = useState(false);
@@ -24,7 +31,7 @@ const List = ({ fetchData,posts }: List) => {
   const [deleteItemId, setDeleteItemId] = useState('');
   const [userNames, setUserNames] = useState<{ [key: string]: string }>({});
 
-  const profileReducer = useSelector((state: any) => state.profile);
+  const profileReducer = useSelector((state: ProfileState) => state.profile);
   const { user } = profileReducer;
 
   useEffect(() => {
@@ -49,7 +56,7 @@ const List = ({ fetchData,posts }: List) => {
 
   const handleDelete = async (id: string) => {
     setLoading(true)
-    await deleteTask(id).then((res: any) => {
+    await deleteTask(id).then((res: ApiResponse) => {
       if (res.success) {
         setLoading(false);
         handleDeleteModalToggle(false)
@@ -58,25 +65,33 @@ const List = ({ fetchData,posts }: List) => {
     });
   };
 
-  const handleEditSubmit = async (formData: any) => {
-    const assignedTo = formData.assignedTo?.length
-      ? formData.assignedTo
-      : [user._id];
+  const handleEditSubmit = async (formData: unknown) => {
+    const typedData = formData as FormData
+
+    const assignedTo = typedData.assignedTo?.length
+      ? typedData.assignedTo
+      : user?._id ? [user._id] : [];
     const requestBody = {
-      todo: formData.todo,
+      todo: typedData.todo,
       assignedTo: assignedTo,
-      userId: user?._id,
-      status: formData.status,
-      end_date: formData.end_date,
+      userId: user?._id || '',
+      status: typedData.status,
+      end_date: typedData.end_date,
       _id: currentItem?._id,
     };
 
-    await updateTask(requestBody).then((res) => {
+    try {
+      const res = await updateTask(requestBody);
       if (res.success) {
         fetchData();
         handleEditModalToggle(false);
+      } else {
+        console.error('Update failed:', res.message);
       }
-    });
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
+
   };
 
   const openEditModal = (item: postData) => {
@@ -117,7 +132,7 @@ const List = ({ fetchData,posts }: List) => {
               </tr>
             </thead>
             <tbody>
-              {posts?.map((post: postData, index: any) => {
+              {posts?.map((post: postData, index) => {
                 return (
                   <tr
                     key={index}

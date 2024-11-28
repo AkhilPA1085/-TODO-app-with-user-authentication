@@ -28,13 +28,13 @@ const NavLinks = () => {
                         key={index}
                         href={link.href}
                         className={
-                        clsx('flex items-center justify-start rounded-md bg-gray-50 p-3 text-md font-bold hover:bg-sky-100 text-black w-full',
+                        clsx('flex items-center justify-start rounded-md bg-gray-50 p-3 text-md font-bold hover:bg-sky-100 text-black md:w-full',
                             {
                                 'bg-sky-100': pathname === link?.href
                             }
                         )}
                     >
-                        <LinkIcon className='w-6 h-6' />
+                        <LinkIcon className='w-auto md:w-6 h-6' />
                         <p className="hidden md:block text-black">
                             {link.name}
                         </p>

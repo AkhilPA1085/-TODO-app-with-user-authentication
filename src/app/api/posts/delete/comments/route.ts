@@ -1,6 +1,13 @@
 import Post from "@/models/postModel";
 import { NextRequest, NextResponse } from "next/server";
 
+type Comment ={
+    _id: string; 
+    userId: string;
+    comment: string;
+    createdAt: string;
+}
+
 export async function DELETE(request: NextRequest) {
     try {
         const { searchParams } = new URL(request.url)
@@ -12,13 +19,21 @@ export async function DELETE(request: NextRequest) {
             return NextResponse.json({ message: 'No Post found', success: false }, { status: 400 })
         }
 
-        const updatedComments = await post.comments.filter((comment: any) => comment?._id.toString() !== commentId)
+        const updatedComments = await post.comments.filter((comment:Comment) => comment?._id.toString() !== commentId)
 
         post.comments = updatedComments;
         const updatedPost = await post.save();
         return NextResponse.json({ success: true, data: updatedPost }, { status: 201 })
 
     } catch (error) {
-        return NextResponse.json({success:false,data:error},{status:500})
-    }
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message, success: false },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { error: "An unexpected error occurred", success: false },
+            { status: 500 }
+        );    }
 }

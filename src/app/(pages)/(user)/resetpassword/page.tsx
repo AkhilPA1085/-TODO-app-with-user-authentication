@@ -48,6 +48,7 @@ const ResetPassword = () => {
                     name="reset_password"
                     id="reset_password"
                     placeholder='Enter New Password'
+                    value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                 />
                 <CustomButton type="submit" label={loading ? 'Processing...' : 'Reset Password'} />

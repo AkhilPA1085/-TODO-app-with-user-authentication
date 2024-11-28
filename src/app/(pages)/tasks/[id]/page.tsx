@@ -7,7 +7,7 @@ import StatusSelect from '@/app/components/select/StatusSelect'
 import UserSelect from '@/app/components/select/UserSelect'
 import BaseCardSkeleton from '@/app/components/skeltons/BaseCardSkelton'
 import CommentSkelton from '@/app/components/skeltons/CommentSkelton'
-import { postData } from '@/app/types/definitions'
+import { postData, ProfileState } from '@/app/types/definitions'
 import { fetchUserWithId } from '@/helpers/fetchUserWithId'
 import { deleteComment, getSingleTask, updateTask } from '@/services/posts.services'
 import React, { Suspense, useEffect, useState } from 'react'
@@ -29,7 +29,7 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
   })
   const [task, setTask] = useState<postData>()
   const [error, setError] = useState({})
-  const profileReducer = useSelector((state: any) => state.profile)
+  const profileReducer = useSelector((state: ProfileState) => state.profile)
   const { user } = profileReducer
   useEffect(() => {
     if (params?.id) {
@@ -120,7 +120,7 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
     const updatedComments = [
       ...(task?.comments || []),
       {
-        userId: user?._id || task?.userId,
+        userId: user?._id || task?.userId || '',
         comment: formData.comment,
         createdAt: new Date().toISOString(),
       }
@@ -201,8 +201,8 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
             </div>
           </form>
 
-          {task?.comments && task?.comments?.toReversed().map((item, index) => (
-            <Suspense fallback={<CommentSkelton />}>
+          <Suspense fallback={<CommentSkelton />}>
+            {task?.comments && task?.comments?.toReversed().map((item, index) => (
               <CommentItem
                 key={index}
                 handleDeleteComment={handleDeleteComment}
@@ -211,8 +211,8 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
                 userId={user?._id}
                 username={username}
               />
-            </Suspense>
-          ))}
+            ))}
+          </Suspense>
         </div>
       </BaseCard>
     </Suspense>

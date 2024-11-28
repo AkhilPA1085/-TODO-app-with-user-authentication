@@ -25,12 +25,13 @@ export type InputFieldType = {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onChangeTextArea?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className?: string;
-    type?: string;
+    type?: string|undefined;
     placeholder?: string;
-    value?: any;
+    value?: string | string[];
+    name?: string;
     error?: { [key: string]: ErrorField };
-    textarea?:boolean;
-    [key: string]: any;
+    textarea?: boolean;
+    [key: string]: unknown;
 }
 
 export type ButtonType = {
@@ -40,26 +41,39 @@ export type ButtonType = {
     label?: string;
     type?: 'submit' | 'button';
     icon?: string
-    [key: string]: any;
+    [key: string]: unknown;
+}
+
+export type Comment ={
+    userId: string;
+    comment: string;
+    createdAt: string;
 }
 
 export type postData = {
     _id?: string;
     todo: string,
     userId: string,
-    assignedTo:string[],
+    assignedTo: string[],
     status: string,
     end_date: string,
-    comments?:{
-        userId:string,
-        comment:string,
-        createdAt:string,
-        _id?:string
-    }[];
+    comments?: Comment[];
 }
 
 export type User = {
     _id: string;
     username: string;
     email: string
+}
+
+export interface ProfileState {
+    profile: {
+        user: User | null;
+        token: string | null;
+    };
+}
+
+export type ApiResponse={
+    success:boolean,
+    message?:string,
 }

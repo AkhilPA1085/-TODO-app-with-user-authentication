@@ -3,13 +3,14 @@
 import { setProfile } from '@/app/lib/features/profile/profileSlice'
 import { userLogout } from '@/services/user.services'
 import { useRouter } from 'next/navigation'
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Container from './Container'
+import { ProfileState } from '@/app/types/definitions'
 
 const Navbar = () => {
   const router = useRouter()
-  const profileReducer = useSelector((state: any) => state.profile)
+  const profileReducer = useSelector((state: ProfileState) => state.profile)
   const { user } = profileReducer
   const dispatch = useDispatch()
 
@@ -27,19 +28,18 @@ const Navbar = () => {
 
   if (user) {
     return (
-      <></>
-      // <div className='fixed top-0 h-24 w-full'>
-      //   <Container>
-      //     <div className='flex items-center justify-between py-5'>
-      //       <h1 className="text-3xl font-bold uppercase tracking-wider">TODO</h1>
-      //       <button
-      //         onClick={logout}
-      //         className='bg-green-600 p-4 rounded-md text-white font-bold'>
-      //         Logout ({user?.username})
-      //       </button>
-      //     </div>
-      //   </Container>
-      // </div>
+      <div className='fixed top-0 h-24 w-full'>
+        <Container>
+          <div className='flex items-center justify-between py-5'>
+            <h1 className="text-3xl font-bold uppercase tracking-wider">TODO</h1>
+            <button
+              onClick={logout}
+              className='bg-green-600 p-4 rounded-md text-white font-bold'>
+              Logout ({user?.username})
+            </button>
+          </div>
+        </Container>
+      </div>
     )
   } else {
     return null

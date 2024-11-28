@@ -28,7 +28,7 @@ const CommentItem = ({
             if(item?.createdAt){
                 setDate(formatDateTimeLocal(item?.createdAt))
             }
-        },[])
+        },[item?.createdAt])
 
     return (
         <Suspense fallback={<CommentSkelton />}>

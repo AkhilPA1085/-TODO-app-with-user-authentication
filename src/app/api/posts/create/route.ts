@@ -11,6 +11,7 @@ export async function POST(request: NextRequest) {
         const { todo, userId,status,end_date,assignedTo,comments } = ceateData ?? {};
 
         const user = await User.findOne({ _id: userId })
+        console.log('user',user)
         if (user) {
             const newPost = new Post({
                 todo: todo,
@@ -20,12 +21,21 @@ export async function POST(request: NextRequest) {
                 end_date:end_date,
                 comments:comments,
             })
-            let savedData = await newPost.save();
+            const savedData = await newPost.save();
             return NextResponse.json({message:'Post added',success:true,savedData},{status:201})
         }else{
             return NextResponse.json({error:'Unauthorized entry',success:false},{status:400})
         }
-    } catch (error:any) {
-        return NextResponse.json({ error: error.errors, success: false }, { status: 500 })
+    } catch (error:unknown) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message, success: false },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { error: "An unexpected error occurred", success: false },
+            { status: 500 }
+        );
     }
 }

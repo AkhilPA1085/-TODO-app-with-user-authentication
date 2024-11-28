@@ -1,66 +1,72 @@
 import { postData } from "@/app/types/definitions"
 import axios from "axios"
 
-export async function createTask(ceateData:postData){
+// Creating a task
+export async function createTask(createData: postData) {
     try {
-        const response = await axios.post('/api/posts/create',{ceateData})
+        const response = await axios.post('/api/posts/create', { createData })
         return response.data
-    } catch (error:any) {
-        return error.response.data.error
+    } catch (error) {
+        return `An unknown error occurred.${error}`
     }
 }
 
-export async function deleteTask(id:string){
+// Deleting a task
+export async function deleteTask(id: string) {
     try {
         const response = await axios.delete(`/api/posts/delete?id=${id}`)
         return response.data
-    } catch (error:any) {
-        console.log(error)
+    } catch (error) {
+        return 'An error occurred while deleting the task.' + error
     }
 }
 
-export async function updateTask(editData:postData){
+// Updating a task
+export async function updateTask(editData: postData) {
     try {
-        const response = await axios.post(`/api/posts/edit`,{editData})
+        const response = await axios.post(`/api/posts/edit`, { editData })
         return response.data
-    } catch (error:any) {
-        console.log(error)
+    } catch (error) {
+        return 'An error occurred while updating the task.' + error
     }
 }
 
-export async function getSingleTask(id:string){
+// Fetching a single task
+export async function getSingleTask(id: string) {
     try {
         const response = await axios.get(`/api/posts/get_task?id=${id}`)
-        return response.data;
+        return response.data
     } catch (error) {
-        console.log(error)
+        return 'An error occurred while fetching the task.' + error
     }
 }
 
-export async function getMyTaskList(userId:string){
+// Fetching tasks assigned to the user
+export async function getMyTaskList(userId: string) {
     try {
         const response = await axios.get(`/api/posts/get_user_todo?id=${userId}`)
         return response.data
-    } catch (error:any) {
-        console.log(error)
+    } catch (error) {
+        return 'An error occurred while fetching your tasks.' + error
     }
 }
 
-export async function getCreatedTaskByMe(userId:string){
+// Fetching tasks created by the user
+export async function getCreatedTaskByMe(userId: string) {
     try {
         const response = await axios.get(`/api/posts/get_created_tasks?id=${userId}`)
         return response.data
-    } catch (error:any) {
-        console.log(error)
+    } catch (error) {
+        return 'An error occurred while fetching created tasks.' + error
     }
 }
 
-// Delete comments
-export async function deleteComment(postId:string,commentId:string){
+// Deleting a comment
+export async function deleteComment(postId: string, commentId: string) {
     try {
         const response = await axios.delete(`/api/posts/delete/comments?postId=${postId}&commentId=${commentId}`)
         return response.data
-    } catch (error:any) {
-        console.log(error)
+    } catch (error) {
+        return 'An error occurred while deleting the comment.' + error
     }
 }

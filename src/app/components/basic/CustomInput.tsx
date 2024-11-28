@@ -2,26 +2,26 @@
 import React, { useState } from 'react'
 import { InputFieldType } from '../../types/definitions'
 import { Input } from '@nextui-org/react'
-import { EyeDropperIcon, EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 
 const CustomInput = ({
     onChange,
-    onChangeTextArea,
     className = '',
     type = 'text',
     placeholder = '',
     value,
     error,
     name,
-    textarea,
     ...props }: InputFieldType) => {
-        const[isVisible,setIsVisible] = useState(false)
-        const toggleVisibility = ()=>{
-            setIsVisible(!isVisible)
-        }
+    const [isVisible, setIsVisible] = useState(false)
+    const toggleVisibility = () => {
+        setIsVisible(!isVisible)
+    }
+
+    console.log('value',value)
     return (
         <div className='flex flex-col gap-2 w-full'>
-            {type==='password'?<Input
+            {type === 'password' ? <Input
                 onChange={onChange}
                 placeholder={placeholder}
                 value={value}
@@ -37,17 +37,17 @@ const CustomInput = ({
                 }
                 type={isVisible ? "text" : "password"}
                 className={className}
-            />:<Input
-            onChange={onChange}
-            type={type}
-            placeholder={placeholder}
-            value={value}
-            name={name}
-            className={className}
-            {...props} />}
-            
+            /> : <Input
+                onChange={onChange}
+                type={type}
+                placeholder={placeholder}
+                value={value}
+                name={name}
+                className={className}
+                {...props} />}
 
-            {error && error[name] && (
+
+            {error && name && error[name] && (
                 <p className='text-red-600 text-sm'>
                     {error[name]?.message}
                 </p>

@@ -20,7 +20,7 @@ export default function StatusSelect({ name, placeholder, onSelectSubmit,initial
         }
       }, [initialValue]);
 
-    const onSelect = (selectedKey: any) => {
+    const onSelect = (selectedKey: React.Key | Set<React.Key>) => {
         const selectedValue = Array.isArray(selectedKey) ? selectedKey[0] : Array.from(selectedKey as Set<React.Key>)[0];
         if (selectedValue) {
             setValue(selectedValue);

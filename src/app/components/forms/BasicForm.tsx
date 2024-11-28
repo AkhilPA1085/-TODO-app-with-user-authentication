@@ -4,12 +4,14 @@ import CustomInput from '../basic/CustomInput'
 import CustomButton from '../basic/CustomButton'
 import UserSelect from '../select/UserSelect'
 import StatusSelect from '../select/StatusSelect'
-import {formatDateTimeLocal} from '@/contant_utils/utils'
+import { formatDateTimeLocal } from '@/contant_utils/utils'
+import { ErrorField } from '@/app/types/definitions'
+
 
 type BasicFormProps = {
-    handleSubmit: (formData: any) => void;
+    handleSubmit: (formData: unknown) => void;
     loading: boolean;
-    error?: any;
+    error?: { [key: string]: ErrorField };
     initialValues?: {
         todo: string;
         end_date: string,
@@ -74,12 +76,13 @@ const BasicForm = ({ handleSubmit, loading, error, initialValues }: BasicFormPro
         handleSubmit(formData)
     }
     const currentDateTime = new Date().toISOString().slice(0, 16);
-    
+
     return (
         <form className="flex flex-col gap-5" onSubmit={onSubmit}>
             {inputFields?.map((inputField, index) => {
                 if (inputField?.type === 'user_select') {
                     return (<UserSelect
+                        key={index}
                         name={inputField?.name}
                         placeholder={inputField?.placeholder}
                         onSelectUsers={handleUserSelect}
@@ -88,14 +91,15 @@ const BasicForm = ({ handleSubmit, loading, error, initialValues }: BasicFormPro
                 }
                 if (inputField?.type === 'status_select') {
                     return (<StatusSelect
+                        key={index}
                         name={inputField?.name}
                         placeholder={inputField?.placeholder}
                         onSelectSubmit={handleStatusSelect}
                         initialValue={initialValues && initialValues['status']}
-                        error={error} />)
+                        error={error}/>)
                 }
                 return (
-                    <div className='flex flex-col text-black'>
+                    <div className='flex flex-col text-black' key={index}>
                         <label htmlFor={index.toString()}>{inputField?.placeholder}</label>
                         <CustomInput
                             key={index}

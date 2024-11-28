@@ -13,7 +13,16 @@ export async function GET(request:NextRequest){
         }
         const response = await Post.find({userId:id})
         return NextResponse.json({todos:response,success:true},{status:200})
-    } catch (error:any) {
-        return NextResponse.json({data:error,success:false},{status:500})
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message, success: false },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { error: "An unexpected error occurred", success: false },
+            { status: 500 }
+        );
     }
 }

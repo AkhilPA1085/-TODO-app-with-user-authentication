@@ -30,19 +30,20 @@ export async function POST(request: NextRequest) {
         }
         const updatedPost = await post.save();
         return NextResponse.json({ message: 'post updated', success: true, data: updatedPost }, { status: 201 })
-    } catch (error: any) {
-        let errorMessage = 'An unexpected error occurred';
+    }  catch (error: unknown) {
+        let errorMessage = "An unexpected error occurred";
 
-        if (error.name === 'ValidationError') {
-            errorMessage = error.message;
-        } else if (error.message) {
+        if (error instanceof Error) {
             errorMessage = error.message;
         }
 
-        return NextResponse.json({
-            success: false,
-            error: errorMessage,
-            details: error,
-        }, { status: 500 });
+        return NextResponse.json(
+            {
+                success: false,
+                error: errorMessage,
+                details: error instanceof Error ? error.stack : null,
+            },
+            { status: 500 }
+        );
     }
 }

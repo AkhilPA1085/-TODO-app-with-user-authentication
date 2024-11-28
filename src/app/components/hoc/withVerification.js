@@ -1,12 +1,16 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 
 export const withVerification = (WrapperComponent) => {
-    return (props) => {
-        const profileReducer = useSelector((state) => state?.profile)
-        const { user } = profileReducer
+    const HOC = (props) => {
+        const profileReducer = useSelector((state) => state?.profile);
+        const { user } = profileReducer;
         const isVerified = user?.isVerified;
 
-        if(!isVerified) return null;
-        return <WrapperComponent {...props}/>
-    }
-}
+        if (!isVerified) return null;
+        return <WrapperComponent {...props} />;
+    };
+
+    HOC.displayName = `withVerification(${WrapperComponent.displayName || WrapperComponent.name || "Component"})`;
+
+    return HOC;
+};

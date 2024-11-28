@@ -35,7 +35,16 @@ export async function POST(request: NextRequest) {
 
         return NextResponse.json({ message: 'Password reset link has been sent to your email.',success:true });
 
-    } catch (error: any) {
-        return NextResponse.json({ error: error.message }, { status: 400 })
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json(
+                { error: error.message, success: false },
+                { status: 500 }
+            );
+        }
+        return NextResponse.json(
+            { error: "An unexpected error occurred", success: false },
+            { status: 500 }
+        );
     }
 }

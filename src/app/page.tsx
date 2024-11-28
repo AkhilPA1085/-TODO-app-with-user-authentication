@@ -1,28 +1,17 @@
 "use client";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import List from "./components/tables/List";
 import { getSingleUserDetails } from "@/services/user.services";
 import { getMyTaskList } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { setProfile } from "./lib/features/profile/profileSlice";
-import { useRouter } from "next/navigation";
+import { ProfileState } from "./types/definitions";
 
 export default function Home() {
   const [posts, setPosts] = useState([])
   const dispatch = useDispatch();
-  const profileReducer = useSelector((state: any) => state.profile);
+  const profileReducer = useSelector((state: ProfileState) => state.profile);
   const { user } = profileReducer;
-  const router = useRouter()
-
-  useEffect(() => {
-    getUserProfile();
-  }, []);
-
-  useEffect(() => {
-    if (user?._id) {
-      userPosts();
-    }
-  }, [user?._id]);
 
   const getUserProfile = async () => {
     await getSingleUserDetails().then((res) => {
@@ -35,6 +24,7 @@ export default function Home() {
   };
 
   const userPosts = async () => {
+    if(!user?._id) return;
     await getMyTaskList(user?._id).then((res) => {
       if (res?.success) {
         setPosts(res?.todos)
@@ -42,11 +32,15 @@ export default function Home() {
     });
   };
 
-  if (!user?.isVerified) {
-    router.replace('/login')
-  }
+  useEffect(() => {
+    getUserProfile();
+  }, [getUserProfile]);
 
-  console.log('user?.isVerified',user?.isVerified)
+  useEffect(() => {
+    if (user?._id) {
+      userPosts();
+    }
+  }, [user?._id,userPosts]);
 
   return (
     <main className="flex flex-col gap-8 row-start-2">

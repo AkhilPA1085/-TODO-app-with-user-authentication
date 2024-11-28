@@ -2,34 +2,31 @@
 import List from "@/app/components/tables/List";
 import CreateTodoModal from "@/app/components/modals/CreateTodoModal";
 import { getCreatedTaskByMe } from "@/services/posts.services";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { User } from "@/app/types/definitions";
+import { ProfileState } from "@/app/types/definitions";
 
-interface RootState {
-  profile: {
-    user: User | null;
-    token: string | null;
-  };
-}
 
 const Tasks = () => {
   const [posts,setPosts]=useState([])
-  const profileReducer = useSelector((state: RootState) => state.profile);
+  const profileReducer = useSelector((state: ProfileState) => state.profile);
   const { user } = profileReducer;
+  const userPosts = useCallback(
+    async () => {
+      if(!user?._id) return;
+      await getCreatedTaskByMe(user?._id).then((res) => {
+        if (res?.success) {
+          setPosts(res?.todos)
+        }
+      });
+    },[user?._id]
+  ) 
 
   useEffect(() => {
     userPosts();
-  }, [user?._id]);
+  }, [userPosts]);
 
-  const userPosts = async () => {
-    if(!user?._id) return;
-    await getCreatedTaskByMe(user?._id).then((res) => {
-      if (res?.success) {
-        setPosts(res?.todos)
-      }
-    });
-  };
+  
 
   return (
     <>
