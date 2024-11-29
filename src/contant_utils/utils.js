@@ -21,7 +21,7 @@ export const getStatusColor = (status) => {
 
 }
 
-export const formatDateTimeLocal = (date) => {
+export const calculateTime = (date) => {
     const inputDate = new Date(date);
     const currentDate = new Date();
 
@@ -38,6 +38,11 @@ export const formatDateTimeLocal = (date) => {
     if (seconds > 0) return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
 
     return 'Just now';
+};
+
+export const formatDateTimeLocal = (date) => {
+    const d = new Date(date);
+    return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
 };
 
 

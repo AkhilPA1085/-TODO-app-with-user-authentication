@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect, useState } from 'react'
 import CommentSkelton from '../skeltons/CommentSkelton'
 import CustomButton from '../basic/CustomButton'
-import { formatDateTimeLocal } from '@/contant_utils/utils';
+import { calculateTime } from '@/contant_utils/utils';
 
 type CommentPropsType = {
     item: {
@@ -25,7 +25,7 @@ const CommentItem = ({
     const [date, setDate] = useState('')
     useEffect(() => {
         if (item?.createdAt) {
-            const diff = formatDateTimeLocal(item?.createdAt);
+            const diff = calculateTime(item?.createdAt);
             setDate(diff)
         }
     }, [item?.createdAt])
