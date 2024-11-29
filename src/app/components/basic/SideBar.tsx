@@ -55,7 +55,7 @@ const SideNav = () => {
                         justify-start
                         gap-2 rounded-md bg-gray-50 p-3 text-sm 
                         font-semibold text-xl hover:bg-sky-100 text-black 
-                        max-h-10"
+                        max-h-10 md:w-full"
                                 type="button"
                             >
                                 <PowerIcon className="w-6" />
