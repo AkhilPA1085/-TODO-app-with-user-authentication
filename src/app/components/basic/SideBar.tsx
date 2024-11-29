@@ -45,7 +45,7 @@ const SideNav = () => {
                         </div>
                     </Link>
                     <div className="flex flex-row md:flex-col items-center md:items-start justify-between h-full">
-                        <div className="flex items-center md:flex-col h-full">
+                        <div className="flex items-center md:flex-col h-full w-full">
                             <NavLinks />
                         </div>
                         <div>
