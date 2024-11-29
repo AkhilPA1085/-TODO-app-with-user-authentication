@@ -7,11 +7,10 @@ connect()
 
 export async function POST(request: NextRequest) {
     try {
-        const {ceateData} = await request.json();
-        const { todo, userId,status,end_date,assignedTo,comments } = ceateData ?? {};
+        const ceateData = await request.json();
+        const { todo, userId,status,end_date,assignedTo,comments } = ceateData
 
         const user = await User.findOne({ _id: userId })
-        console.log('user',user)
         if (user) {
             const newPost = new Post({
                 todo: todo,

@@ -13,8 +13,19 @@ export default function Home() {
   const profileReducer = useSelector((state: ProfileState) => state.profile);
   const { user } = profileReducer;
 
+  useEffect(() => {
+    getUserProfile();
+  }, []);
+
+  useEffect(() => {
+    if (user?._id) {
+      userPosts();
+    }
+  }, [user?._id]);
+
   const getUserProfile = async () => {
     await getSingleUserDetails().then((res) => {
+      console.log('res',res)
       if (res?.data?.success) {
         dispatch(setProfile({ profile: res.data.user }));
       } else {
@@ -31,16 +42,6 @@ export default function Home() {
       }
     });
   };
-
-  useEffect(() => {
-    getUserProfile();
-  }, [getUserProfile]);
-
-  useEffect(() => {
-    if (user?._id) {
-      userPosts();
-    }
-  }, [user?._id,userPosts]);
 
   return (
     <main className="flex flex-col gap-8 row-start-2">

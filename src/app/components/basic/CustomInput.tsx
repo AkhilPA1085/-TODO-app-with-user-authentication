@@ -17,8 +17,6 @@ const CustomInput = ({
     const toggleVisibility = () => {
         setIsVisible(!isVisible)
     }
-
-    console.log('value',value)
     return (
         <div className='flex flex-col gap-2 w-full'>
             {type === 'password' ? <Input

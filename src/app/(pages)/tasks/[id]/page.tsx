@@ -185,13 +185,7 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
                 onSelectUsers={handleUserSelect}
                 placeholder='Select Assigned Users'
                 initialUsers={task && task?.assignedTo} />
-              <CustomInput
-                placeholder="Comment..."
-                name="comment"
-                value={formData?.comment}
-                onChange={handleInputChange}
-                error={error}
-              />
+
               <CustomButton
                 className="bg-teal-700"
                 icon="send"
@@ -199,6 +193,13 @@ const SingleTask = ({ params }: { params: { id: string } }) => {
                 type="submit"
               />
             </div>
+            <CustomInput
+              placeholder="Comment..."
+              name="comment"
+              value={formData?.comment}
+              onChange={handleInputChange}
+              error={error}
+            />
           </form>
 
           <Suspense fallback={<CommentSkelton />}>

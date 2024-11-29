@@ -27,7 +27,7 @@ export type InputFieldType = {
     className?: string;
     type?: string|undefined;
     placeholder?: string;
-    value?: string | string[];
+    value?: any;
     name?: string;
     error?: { [key: string]: ErrorField };
     textarea?: boolean;

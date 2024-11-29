@@ -40,7 +40,7 @@ const CreateTodoModal = ({ fetchData }: CreateTodoProps) => {
 
   useEffect(() => {
     getUserProfile();
-  }, [getUserProfile]);
+  }, []);
 
   useEffect(() => {
     if (user?._id) {
@@ -54,7 +54,6 @@ const CreateTodoModal = ({ fetchData }: CreateTodoProps) => {
   };
 
   const handleSubmit = async (formData: any) => {
-  
     setLoading(true);
     if (user && user._id) {
       const assignedTo = formData.assignedTo?.length

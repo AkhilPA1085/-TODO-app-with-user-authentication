@@ -1,10 +1,9 @@
-import { postData } from "@/app/types/definitions"
 import axios from "axios"
 
 // Creating a task
-export async function createTask(createData: postData) {
+export async function createTask(createData:unknown) {
     try {
-        const response = await axios.post('/api/posts/create', { createData })
+        const response = await axios.post('/api/posts/create', createData)
         return response.data
     } catch (error) {
         return `An unknown error occurred.${error}`
@@ -22,7 +21,7 @@ export async function deleteTask(id: string) {
 }
 
 // Updating a task
-export async function updateTask(editData: postData) {
+export async function updateTask(editData: unknown) {
     try {
         const response = await axios.post(`/api/posts/edit`, { editData })
         return response.data

@@ -23,22 +23,27 @@ const CommentItem = ({
     userId,
     taskId,
     handleDeleteComment, }: CommentPropsType) => {
-        const [date,setDate]=useState('')
-        useEffect(()=>{
-            if(item?.createdAt){
-                setDate(formatDateTimeLocal(item?.createdAt))
-            }
-        },[item?.createdAt])
+    const [date, setDate] = useState('')
+    useEffect(() => {
+        if (item?.createdAt) {
+            const diff = formatDateTimeLocal(item?.createdAt);
+            setDate(diff)
+        }
+    }, [item?.createdAt])
 
     return (
         <Suspense fallback={<CommentSkelton />}>
             <div className='p-4 bg-gray-200 rounded my-4 flex justify-between'>
                 <div>
-                    <p className='text-xs text-black capitalize font-bold'>
-                        {username[item?.userId]}
+                    <p className="flex items-baseline gap-4">
+                        <p className='text-sm text-black capitalize font-bold'>
+                            {username[item?.userId]}
+                        </p>
+                        <p className='text-black text-xs mb-4'>
+                            {date}
+                        </p>
                     </p>
                     <p className='text-md text-black mb-4 pl-4 text-lg'>{item?.comment}</p>
-                    <p className='text-black text-xs mb-4'>{moment(date).utc().format('DD/MM/YYY,h:mm A')}</p>
                 </div>
                 {item?.userId === userId &&
                     <CustomButton
