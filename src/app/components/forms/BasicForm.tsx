@@ -5,19 +5,14 @@ import CustomButton from '../basic/CustomButton'
 import UserSelect from '../select/UserSelect'
 import StatusSelect from '../select/StatusSelect'
 import { formatDateTimeLocal } from '@/contant_utils/utils'
-import { ErrorField } from '@/app/types/definitions'
+import { ErrorField, TaskFormValues } from '@/app/types/definitions'
 
 
 type BasicFormProps = {
-    handleSubmit: (formData: unknown) => void;
+    handleSubmit: (formData: TaskFormValues) => void;
     loading: boolean;
     error?: { [key: string]: ErrorField };
-    initialValues?: {
-        todo: string;
-        end_date: string,
-        status: string,
-        assignedTo: string[]
-    }
+    initialValues?: TaskFormValues;
 }
 
 
@@ -37,43 +32,45 @@ const inputFields = [
 ]
 
 const BasicForm = ({ handleSubmit, loading, error, initialValues }: BasicFormProps) => {
-    const [formData, setFormData] = useState({
+    const [formValues, setFormValues] = useState({
         todo: '',
         end_date: '',
         status: '',
-        assignedTo: [] as string[]
-    })
+        assignedTo: [] as string[],
+        userId: '',
+    });
 
     useEffect(() => {
         if (initialValues) {
-            setFormData({
+            setFormValues({
                 ...initialValues,
-                end_date: initialValues.end_date ? formatDateTimeLocal(initialValues.end_date) : ''
+                assignedTo: initialValues.assignedTo || [],
+                end_date: initialValues.end_date ? formatDateTimeLocal(initialValues.end_date) : '',
             });
         }
     }, [initialValues]);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({
-            ...formData,
+        setFormValues({
+            ...formValues,
             [e.target.name]: e.target.value
         })
     }
     const handleUserSelect = (selectedUsers: string[]) => {
-        setFormData({
-            ...formData,
+        setFormValues({
+            ...formValues,
             assignedTo: selectedUsers
         })
     }
     const handleStatusSelect = (status: string) => {
-        setFormData({
-            ...formData,
+        setFormValues({
+            ...formValues,
             status: status
         })
     }
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        handleSubmit(formData)
+        handleSubmit(formValues)
     }
     const currentDateTime = new Date().toISOString().slice(0, 16);
 
@@ -109,7 +106,7 @@ const BasicForm = ({ handleSubmit, loading, error, initialValues }: BasicFormPro
                             min={inputField?.type === 'datetime-local' ? currentDateTime : undefined}
                             placeholder={inputField?.placeholder}
                             onChange={handleInputChange}
-                            value={formData[inputField?.name as keyof typeof formData] || ''}
+                            value={formValues[inputField?.name as keyof typeof formValues] || ''}
                             error={error} />
                     </div>
                 )

@@ -7,8 +7,6 @@ import { useRouter } from 'next/navigation';
 import CustomInput from '@/app/components/basic/CustomInput';
 import CustomButton from '@/app/components/basic/CustomButton';
 import BaseCard from '@/app/components/cards/BaseCard';
-import { useDispatch } from 'react-redux';
-import { setProfile } from '@/app/lib/features/profile/profileSlice';
 
 const LoginPage = () => {
     const router = useRouter()

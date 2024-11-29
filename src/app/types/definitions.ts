@@ -25,9 +25,9 @@ export type InputFieldType = {
     onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
     onChangeTextArea?: (event: React.ChangeEvent<HTMLTextAreaElement>) => void;
     className?: string;
-    type?: string|undefined;
+    type?: string | undefined;
     placeholder?: string;
-    value?: any;
+    value?: string | number | readonly string[];
     name?: string;
     error?: { [key: string]: ErrorField };
     textarea?: boolean;
@@ -44,7 +44,7 @@ export type ButtonType = {
     [key: string]: unknown;
 }
 
-export type Comment ={
+export type Comment = {
     userId: string;
     comment: string;
     createdAt: string;
@@ -73,7 +73,15 @@ export interface ProfileState {
     };
 }
 
-export type ApiResponse={
-    success:boolean,
-    message?:string,
+export type ApiResponse = {
+    success: boolean,
+    message?: string,
 }
+
+export type TaskFormValues = {
+    userId: string;
+    todo: string;
+    assignedTo: string[];
+    status: string;
+    end_date: string;
+};

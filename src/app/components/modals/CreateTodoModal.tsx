@@ -6,18 +6,12 @@ import { createTask } from "@/services/posts.services";
 import { useDispatch, useSelector } from "react-redux";
 import { getSingleUserDetails } from "@/services/user.services";
 import { setProfile } from "@/app/lib/features/profile/profileSlice";
-import { ProfileState } from "@/app/types/definitions";
+import { ProfileState, TaskFormValues } from "@/app/types/definitions";
 
 type CreateTodoProps = {
   fetchData: () => Promise<void>;
 }
 
-interface FormData {
-  todo: string;
-  assignedTo?: string[];
-  status: string;
-  end_date: string;
-}
 
 const CreateTodoModal = ({ fetchData }: CreateTodoProps) => {
   const [loading, setLoading] = useState(false);
@@ -53,7 +47,7 @@ const CreateTodoModal = ({ fetchData }: CreateTodoProps) => {
     setModalOpen(isOpen);
   };
 
-  const handleSubmit = async (formData: any) => {
+  const handleSubmit = async (formData: TaskFormValues) => {
     setLoading(true);
     if (user && user._id) {
       const assignedTo = formData.assignedTo?.length
@@ -86,7 +80,7 @@ const CreateTodoModal = ({ fetchData }: CreateTodoProps) => {
       buttonClass='bg-teal-700 hover:bg-teal-600'
     >
       <BasicForm
-        handleSubmit={handleSubmit}
+        handleSubmit={(formData: unknown) => handleSubmit(formData as TaskFormValues)}
         loading={loading}
         error={error} />
     </BaseModal>

@@ -22,7 +22,7 @@ const CustomInput = ({
             {type === 'password' ? <Input
                 onChange={onChange}
                 placeholder={placeholder}
-                value={value}
+                value={value !== undefined ? String(value) : ''}
                 name={name}
                 endContent={
                     <button className="focus:outline-none" type="button" onClick={toggleVisibility} aria-label="toggle password visibility">
@@ -39,7 +39,7 @@ const CustomInput = ({
                 onChange={onChange}
                 type={type}
                 placeholder={placeholder}
-                value={value}
+                value={value !== undefined ? String(value) : ''}
                 name={name}
                 className={className}
                 {...props} />}

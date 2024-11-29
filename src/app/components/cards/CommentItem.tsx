@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useState } from 'react'
 import CommentSkelton from '../skeltons/CommentSkelton'
 import CustomButton from '../basic/CustomButton'
 import { formatDateTimeLocal } from '@/contant_utils/utils';
-import moment from 'moment'
 
 type CommentPropsType = {
     item: {
