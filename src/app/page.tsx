@@ -47,7 +47,7 @@ export default function Home() {
     <main className="flex flex-col gap-8 row-start-2">
       <div className="flex justify-between items-center">
         <h1 className="text-teal-700 text-2xl font-bold">
-          Tasks For You
+          Tasks For Me
         </h1>
       </div>
       <List fetchData={userPosts} posts={posts} />

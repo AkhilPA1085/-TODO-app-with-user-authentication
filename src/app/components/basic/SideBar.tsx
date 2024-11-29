@@ -48,7 +48,7 @@ const SideNav = () => {
                         <div className="flex items-center md:flex-col h-full w-full">
                             <NavLinks />
                         </div>
-                        <div>
+                        <div className='md:w-full'>
                             <button
                                 onClick={handleLogout}
                                 className="flex grow items-center 
